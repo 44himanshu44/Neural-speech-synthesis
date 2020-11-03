@@ -22,7 +22,7 @@ Being non-autoregressive, this Transformer model is:
 
 ## 🔈 Samples
 
-[Can be found here.](https://as-ideas.github.io/TransformerTTS/)
+[Can be found here.](https://drive.google.com/drive/folders/1hhqgRnuYhU4LS6PBsyMhEgLVN6Taa8_R)
 
 These samples' spectrograms are converted using the pre-trained [melgan_Autoregressive_model_v2](https://public-asai-dl-models.s3.eu-central-1.amazonaws.com/TransformerTTS/ljspeech_melgan_autoregressive_transformer.zip) <br>
 
@@ -96,7 +96,7 @@ We log some information that can be visualized with TensorBoard:
 tensorboard --logdir /logs/directory/
 ```
 
-![Tensorboard Demo](https://github.com/44himanshu44/Neural-speech-synthesis/blob/master/docs/tensorboard_monitor.gif)
+![Tensorboard Demo](https://github.com/44himanshu44/Neural-speech-synthesis/blob/master/docs/tensorboard.gif)
 
 ## Prediction
 Predict with either the Forward or Autoregressive model
