@@ -1,0 +1,14 @@
+1) Create data set
+2) change data dir -> data_config.yaml
+3) set with_stress value in create_dataset.py
+4) change the metadata_filename in data_config.yaml -> data_metafile.txt
+5) in create_dataset.py -> line 48 -> change to l_split[1] instead of -1
+6) add lines after 53 
+for i in range(len(audio_data)):
+        audio_data[i][0] = audio_data[i][0].replace('\ufeff','')
+
+7) change test samples -> n_test in data_config.yaml
+8) In train_autoregressive.py line 100 change the batch_size of test samples if test samples length is less than the batch size
+9) Delete the checkpoint file for 90ckpt
+9) change in autoregressive_config.yaml ->max_steps  = 1000000th
+10)copy the data and auto yaml files from the pretrained

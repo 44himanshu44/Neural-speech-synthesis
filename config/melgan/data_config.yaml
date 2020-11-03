@@ -1,0 +1,26 @@
+log_directory: 'logdir'
+data_directory: 'Custom_data'
+train_data_directory: null
+wav_subdir_name: 'wavs'
+metadata_filename: 'data_metafile.txt'
+session_name: melgan
+
+# DATA
+n_samples: 100000
+n_test: 10
+mel_start_value: 4
+mel_end_value: -4
+
+# AUDIO
+sampling_rate: 22050
+n_fft: 1024
+mel_channels: 80
+hop_length: 256                    # 12.5ms - in line with Tacotron 2 paper
+win_length: 1024                   # 50ms - same reason as above
+f_min: 0
+f_max: 8000
+normalizer: MelGAN                 # which normalizer to use from utils.audio.py
+
+# TOKENIZER
+phoneme_language: en
+with_stress: False 

@@ -1,0 +1,26 @@
+# PATHS: change accordingly
+data_directory: '/path/to/dataset' # path to wavs and metafile directory
+log_directory: '/path/to/logdir'   # weights and logs are stored here
+train_data_directory: null         # optional: alternative directory where to store processed data (default is data_dir)
+wav_subdir_name: 'wavs'            # subfolder in data_directory containing wavs files
+metadata_filename: 'metadata.csv'  # name of metadata file under data_directory
+session_name: null                 # session naming, can be specified in command line
+
+# DATA
+n_samples: 100000
+n_test: 100
+mel_start_value: .5
+mel_end_value: -.5
+
+# AUDIO
+sampling_rate: 22050
+n_fft: 2048
+mel_channels: 80
+hop_length: 275
+win_length: 1100
+f_min: 40
+f_max: null
+normalizer: WaveRNN                 # which mel normalization to use from utils.audio.py  [MelGAN or WaveRNN]
+# TOKENIZER
+phoneme_language: 'en'
+with_stress: False                   # use stress symbols in phonemization
