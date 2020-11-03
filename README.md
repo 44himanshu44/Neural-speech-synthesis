@@ -96,7 +96,7 @@ We log some information that can be visualized with TensorBoard:
 tensorboard --logdir /logs/directory/
 ```
 
-![Tensorboard Demo](https://github.com/44himanshu44/Neural-speech-synthesis/blob/master/docs/tensorboard.gif)
+![Tensorboard Demo](https://github.com/44himanshu44/Neural-speech-synthesis/blob/master/docs/tensorboard_monitor.gif)
 
 ## Prediction
 Predict with either the Forward or Autoregressive model
