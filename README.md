@@ -13,9 +13,6 @@ This repo is based on the following papers:
 - [Neural Speech Synthesis with Transformer Network](https://arxiv.org/abs/1809.08895)
 
 
-Our pre-trained LJSpeech models are compatible with the pre-trained vocoders from:
-- [WaveRNN](https://github.com/fatchord/WaveRNN)
-- [MelGAN](https://github.com/seungwonpark/melgan)
 
 #### Non-Autoregressive
 Being non-autoregressive, this Transformer model is:
@@ -27,27 +24,15 @@ Being non-autoregressive, this Transformer model is:
 
 [Can be found here.](https://as-ideas.github.io/TransformerTTS/)
 
-These samples' spectrograms are converted using the pre-trained [WaveRNN](https://github.com/fatchord/WaveRNN) and [MelGAN](https://github.com/seungwonpark/melgan) vocoders.<br>
+These samples' spectrograms are converted using the pre-trained [melgan_Autoregressive_model_v2](https://public-asai-dl-models.s3.eu-central-1.amazonaws.com/TransformerTTS/ljspeech_melgan_autoregressive_transformer.zip) <br>
 
-
-Try it out on Colab:
-
-| Version | Colab Link |
-|---|---|
-| Forward + MelGAN | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/as-ideas/TransformerTTS/blob/master/notebooks/synthesize_forward_melgan.ipynb) |
-| Forward + WaveRNN | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/as-ideas/TransformerTTS/blob/master/notebooks/synthesize_forward_wavernn.ipynb) |
-| Autoregressive + MelGAN | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/as-ideas/TransformerTTS/blob/master/notebooks/synthesize_autoregressive_melgan.ipynb) |
-| Autoregressive + WaveRNN | [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/as-ideas/TransformerTTS/blob/master/notebooks/synthesize_autoregressive_wavernn.ipynb) |
-
-## Updates
-- 4/06/20: Added normalisation and pre-trained models compatible with the faster [MelGAN](https://github.com/seungwonpark/melgan) vocoder.
 
 ## 📖 Contents
 - [Installation](#installation)
 - [Dataset](#dataset)
 - [Training](#training)
     - [Autoregressive](#train-autoregressive-model)
-    - [Forward](#train-forward-model)
+   
 - [Prediction](#prediction)
 - [Model Weights](#model_weights)
 
@@ -57,10 +42,6 @@ Make sure you have:
 
 * Python >= 3.6
 
-Install espeak as phonemizer backend (for macOS use brew):
-```
-sudo apt-get install espeak
-```
 
 Then install the rest with pip:
 ```
@@ -71,10 +52,10 @@ Read the individual scripts for more command line arguments.
 
 ## Dataset
 You can directly use [LJSpeech](https://keithito.com/LJ-Speech-Dataset/) to create the training dataset.
+Or record your own voice samples
 
 #### Configuration
 * If training on LJSpeech, or if unsure, simply use one of 
-    * ```config/wavernn``` to create models compatible with [WaveRNN](https://github.com/fatchord/WaveRNN) 
     * ```config/melgan``` for models compatible with [MelGAN](https://github.com/seungwonpark/melgan) 
 * **EDIT PATHS**: in `data_config.yaml` edit the paths to point at your dataset and log folders
 
@@ -101,18 +82,7 @@ python create_dataset.py --config config/melgan
 ```bash
 python train_autoregressive.py --config config/melgan
 ```
-### Train Forward Model
-#### Compute alignment dataset
-First use the autoregressive model to create the durations dataset
-```bash
-python extract_durations.py --config config/melgan --binary --fix_jumps --fill_mode_next
-```
-this will add an additional folder to the dataset folder containing the new datasets for validation and training of the forward model.<br>
-If the rhythm of the trained model is off, play around with the flags of this script to fix the durations.
-#### Training
-```bash
-python train_forward.py --config /path/to/config_folder/
-```
+
 #### Training & Model configuration
 - Training and model settings can be configured in `model_config.yaml`
 
@@ -126,42 +96,26 @@ We log some information that can be visualized with TensorBoard:
 tensorboard --logdir /logs/directory/
 ```
 
-![Tensorboard Demo](https://raw.githubusercontent.com/as-ideas/TransformerTTS/master/docs/tboard_demo.gif)
+![Tensorboard Demo](https://imgflip.com/gif/4ktt3v)
 
 ## Prediction
 Predict with either the Forward or Autoregressive model
 ```python
 from utils.config_manager import ConfigManager
 from utils.audio import Audio
+import IPython.display as ipd
 
-config_loader = ConfigManager('/path/to/config/', model_kind='forward')
-audio = Audio(config_loader.config)
-model = config_loader.load_model()
+config_manager = ConfigManager(config_path='config/melgan', model_kind='autoregressive', session_name = None)
+audio = Audio(config_manager.config)
+conf_path = 'logdir/melgan/'
+model = config_manager.load_model(conf_path +'autoregressive_weights/ckpt-18')
 out = model.predict('Please, say something.')
 
 # Convert spectrogram to wav (with griffin lim)
 wav = audio.reconstruct_waveform(out['mel'].numpy().T)
+ipd.display(ipd.Audio(wav, rate=config_manager.config['sampling_rate']))
 ```
 
-## Model Weights
 
-| Model URL | Commit | Vocoder Commit|
-|---|---|---|
-|[ljspeech_melgan_forward_model](https://public-asai-dl-models.s3.eu-central-1.amazonaws.com/TransformerTTS/ljspeech_melgan_forward_transformer.zip)| 1c1cb03| aca5990 |
-|[ljspeech_melgan_autoregressive_model_v2](https://public-asai-dl-models.s3.eu-central-1.amazonaws.com/TransformerTTS/ljspeech_melgan_autoregressive_transformer.zip)| 1c1cb03| aca5990 |
-|[ljspeech_wavernn_forward_model](https://public-asai-dl-models.s3.eu-central-1.amazonaws.com/TransformerTTS/ljspeech_wavernn_forward_transformer.zip)| 1c1cb03| 3595219 |
-|[ljspeech_wavernn_autoregressive_model_v2](https://public-asai-dl-models.s3.eu-central-1.amazonaws.com/TransformerTTS/ljspeech_wavernn_autoregressive_transformer.zip)| 1c1cb03| 3595219 |
-|[ljspeech_wavernn_forward_model](https://public-asai-dl-models.s3.eu-central-1.amazonaws.com/TransformerTTS/ljspeech_forward_transformer.zip)| d9ccee6| 3595219 |
-|[ljspeech_wavernn_autoregressive_model_v2](https://public-asai-dl-models.s3.eu-central-1.amazonaws.com/TransformerTTS/ljspeech_autoregressive_transformer.zip)| d9ccee6| 3595219 |
-|[ljspeech_wavernn_autoregressive_model_v1](https://github.com/as-ideas/tts_model_outputs/tree/master/ljspeech_transformertts)| 2f3a1b5| 3595219 |
-## Maintainers
-* Francesco Cardinale, github: [cfrancesco](https://github.com/cfrancesco)
-
-## Special thanks
-[MelGAN](https://github.com/seungwonpark/melgan) and [WaveRNN](https://github.com/fatchord/WaveRNN): data normalization and samples' vocoders are from these repos.
-
-[Erogol](https://github.com/erogol) and the Mozilla TTS team for the lively exchange on the topic.
-
-
-## Copyright
-See [LICENSE](LICENSE) for details.
+## Refrence
+See [TransformerTTS](https://github.com/as-ideas/TransformerTTS) for details.
