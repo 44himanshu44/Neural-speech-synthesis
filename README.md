@@ -20,7 +20,7 @@ Being non-autoregressive, this Transformer model is:
 - Fast: With no autoregression, predictions take a fraction of the time.
 - Controllable: It is possible to control the speed of the generated utterance.
 
-## 🔈 Samples
+## 🔈 Sample output
 
 Samples can be found [here](https://drive.google.com/drive/folders/1hhqgRnuYhU4LS6PBsyMhEgLVN6Taa8_R)
 
