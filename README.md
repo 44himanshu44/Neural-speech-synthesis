@@ -22,7 +22,7 @@ Being non-autoregressive, this Transformer model is:
 
 ## 🔈 Sample output
 
-Samples can be found [here](https://drive.google.com/drive/folders/1hhqgRnuYhU4LS6PBsyMhEgLVN6Taa8_R)
+Samples can be found [here](https://drive.google.com/drive/folders/1WToCL6LHIvL3fQnqo1r4gK2yrfRzZXU8?usp=sharing)
 
 These sample spectrograms are converted using the pre-trained [melgan_Autoregressive_model_v2](https://public-asai-dl-models.s3.eu-central-1.amazonaws.com/TransformerTTS/ljspeech_melgan_autoregressive_transformer.zip) <br>
 
@@ -116,7 +116,7 @@ wav = audio.reconstruct_waveform(out['mel'].numpy().T)
 ipd.display(ipd.Audio(wav, rate=config_manager.config['sampling_rate']))
 ```
 ## Model Weights
-Fine tuned model on my voice :[melgan_autoregressive_model_ckpt_18](https://drive.google.com/file/d/1cxk6IwORIkX8jg1oLiLDB0TRw83NKZc0/view?usp=sharing)
+Fine tuned model on my voice :[melgan_autoregressive_model_ckpt_18](https://drive.google.com/drive/folders/1WToCL6LHIvL3fQnqo1r4gK2yrfRzZXU8?usp=sharing)
 
 ## Refrence
 See [TransformerTTS](https://github.com/as-ideas/TransformerTTS) for details.
